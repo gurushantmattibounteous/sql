@@ -1,0 +1,36 @@
+CREATE TABLE emp (
+    eid SERIAL PRIMARY KEY,
+    ename VARCHAR(100) NOT NULL,
+    sal NUMERIC(10,2) NOT NULL
+);
+
+INSERT INTO emp (ename, sal) VALUES
+('John', 50000.00),
+('Alice', 62000.50),
+('Robert', 45000.75),
+('Sophia', 70000.00),
+('David', 55000.25);
+
+select * from emp;
+
+select * from emp where sal = (select MAX(sal) from emp);
+
+-- secondmax salary
+select MAX(sal) as Second_max
+From emp
+where sal < (select max(sal) from emp);
+
+-- full details
+
+select * from emp where sal = (
+select max(sal)
+from emp
+where sal < (select max(sal) from emp)
+);
+
+-- query to find the duplicate record
+
+select ename, count(*)
+from emp
+group by ename
+having count(*) > 1;
